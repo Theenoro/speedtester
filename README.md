@@ -30,6 +30,10 @@ crontab -e
 0 */2 * * * /script/path/index.js >/dev/null 2>&1
 
 ```
+and for logging
+´´´bash
+0 */2 * * * /script/path/index.js >>/script/path/log.txt 2>&1
+```
 
 ---
 # ***TODO***
