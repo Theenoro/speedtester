@@ -1,6 +1,8 @@
 # speedtester
 
-https://raw.githubusercontent.com/Theenoro/speedtester/master/preview.png
+![Preview](https://raw.githubusercontent.com/Theenoro/speedtester/master/preview.png)
+
+click on it for better res
 
 # Linux
 
