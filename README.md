@@ -31,10 +31,12 @@ crontab -e
 
 ```
 and for logging
-´´´bash
-0 */2 * * * /script/path/index.js >>/script/path/log.txt 2>&1
-```
 
+```bash
+
+0 */2 * * * /script/path/index.js >>/script/path/log.txt 2>&1
+
+```
 ---
 # ***TODO***
 
