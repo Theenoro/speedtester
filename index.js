@@ -3,9 +3,13 @@ console.log('---------------')
 console.log(Date());
 console.log('---------------')
 console.log('Start Speedtest');
+const os = require('os')
 const {  spawn } = require('child_process');
 const fs = require('fs');
 const sp = spawn('speedtest-cli', []);
+
+var this_os = os.platform();
+
 
 var html = `
 <script src="https://code.jquery.com/jquery-3.2.1.min.js">
@@ -126,19 +130,34 @@ sp.on('close', (code) => {
     return;
   }
   for (var i = 0; i < out.length; i++) {
-    if (out[i].match('Download')) {
-      end.download = parseFloat(out[i].split('\n')[1].split(' ')[1]);
-    } else if (out[i].match('Upload')) {
-      end.upload = parseFloat(out[i].split('\n')[1].split(' ')[1]);
-    } else if (out[i].match('ms')) {
-      end.ping = parseInt(out[i].split('km]:')[1].split('ms')[0].trim());
+    if(this_os === 'win32'){
+        if(out[i].match('Ping')){
+            console.log('out')
+            var m = out[i].split('Ping (Lowest): ')[1].split(' ms | Download (Max): ');
+            var n = m[1].split(' Mbps | Upload (Max): ');
+            end.upload = parseFloat(n[1].split(' Mbps'));
+            end.download = parseFloat(n[0]);
+            end.ping = parseInt(m[0]);
+        }
+    }else{
+        if (out[i].match('Download')) {
+          end.download = parseFloat(out[i].split('\n')[1].split(' ')[1]);
+        } else if (out[i].match('Upload')) {
+          end.upload = parseFloat(out[i].split('\n')[1].split(' ')[1]);
+        } else if (out[i].match('ms')) {
+          end.ping = parseInt(out[i].split('km]:')[1].split('ms')[0].trim());
+        }
     }
   }
   end.time = parseInt(Date.now() / 1000);
   console.dir(end);
   fs.readFile(__dirname + '/datasheet.json', 'utf8', function(err, data) {
     if (!err) {
-      datasheet = JSON.parse(data);
+      try{
+          datasheet = JSON.parse(data);
+      }catch(e){
+          datasheet = {'sets': []};
+      }
     }
     datasheet.sets.push(end);
     fs.writeFile(__dirname + '/datasheet.json', JSON.stringify(datasheet), function(err) {

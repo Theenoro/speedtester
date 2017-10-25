@@ -7,7 +7,7 @@ click on it for better res
 # Linux
 
 install https://nodejs.org/en/
-place script someware
+place script somewere
 & run
 ```bash
 chmod +x index.js
